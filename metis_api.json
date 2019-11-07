@@ -21,16 +21,8 @@
       "description": "Everything about your institute"
     },
     {
-      "name": "institute_atg_stats",
-      "description": "Institute ATG uasge metrics"
-    },
-    {
       "name": "institute_cohort_stats",
-      "description": "Cohort stats for institute users",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
+      "description": "Cohort stats for institute users"
     }
   ],
   "schemes": [
@@ -75,10 +67,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/institute"
-            }
+            "description": "successful operation"
           },
           "400": {
             "description": "Invalid institute ID supplied"
@@ -86,207 +75,466 @@
           "404": {
             "description": "institute not found"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Created user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
         }
       }
     },
-    "/user/{username}": {
+    "/institute/{institute_id}/{sub_org_id}": {
       "get": {
         "tags": [
-          "user"
+          "institute"
         ],
-        "summary": "Get user by user name",
-        "description": "",
-        "operationId": "getUserByName",
+        "summary": "Get institute stats with institute id",
+        "description": "Returns institute details corresponding to parameters",
+        "operationId": "institute_sub_org",
         "produces": [
-          "application/xml",
           "application/json"
         ],
         "parameters": [
           {
-            "name": "username",
+            "name": "institute_id",
             "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sub_org_id",
+            "in": "path",
+            "description": "institute_id's sub organization id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "target_year",
+            "in": "query",
+            "description": "target_year for institute students of whose data needs to be captured",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "description": "successful operation"
           },
           "400": {
-            "description": "Invalid username supplied"
+            "description": "Invalid institute ID supplied"
           },
           "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "name that need to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be deleted",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
+            "description": "institute not found"
           }
         }
       }
-    }
-  },
-  "securityDefinitions": {
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
+    },
+    "/institute_cohort_stats/{institute_id}": {
+      "get": {
+        "tags": [
+          "institute_cohort_stats"
+        ],
+        "summary": "Get institute cohortwise stats for institute id",
+        "description": "Returns similar response as institute but with cohortwise details corresponding to parameters given",
+        "operationId": "institute_cohort_stats",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "institute_id",
+            "in": "path",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "goal_id",
+            "in": "query",
+            "description": "goal id for which data needs to be captured",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      }
+    },
+    "/institute_cohort_stats/{institute_id}/{sub_org_id}": {
+      "get": {
+        "tags": [
+          "institute_cohort_stats"
+        ],
+        "summary": "Get institute cohortwise stats for institute id",
+        "description": "Returns similar response as institute but with cohortwise details corresponding to parameters given",
+        "operationId": "institute_sub_org_cohort_stats",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "institute_id",
+            "in": "path",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sub_org_id",
+            "in": "path",
+            "description": "institute_id's sub organization id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "goal_id",
+            "in": "query",
+            "description": "goal id for which data needs to be captured",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "target_year",
+            "in": "query",
+            "description": "target_year for institute students of whose data needs to be captured",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      }
+    },
+    "/institute_monetization_stats/{institute_id}": {
+      "get": {
+        "tags": [
+          "institute_monetization_stats"
+        ],
+        "summary": "Get institute cohortwise students enrolled on products (which are stated in IDB) for institute id",
+        "description": "Returns cohortwise students enrolled on products ( which are stated in IDB) corresponding to parameters given",
+        "operationId": "institute_cohort_stats",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "institute_id",
+            "in": "path",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "goal_id",
+            "in": "query",
+            "description": "goal id for which data needs to be captured",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      }
+    },
+    "/institute_monetization_stats/{institute_id}/{sub_org_id}": {
+      "get": {
+        "tags": [
+          "institute_monetization_stats"
+        ],
+        "summary": "Get institute cohortwise students enrolled on products (which are stated in IDB) for institute id",
+        "description": "Returns cohortwise students enrolled on products ( which are stated in IDB) corresponding to parameters given",
+        "operationId": "institute_sub_org_monetization_stats",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "institute_id",
+            "in": "path",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sub_org_id",
+            "in": "path",
+            "description": "institute_id's sub organization id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "goal_id",
+            "in": "query",
+            "description": "goal id for which data needs to be captured",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "target_year",
+            "in": "query",
+            "description": "target_year for institute students of whose data needs to be captured",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      }
+    },
+    "/student/{user_id}": {
+      "get": {
+        "tags": [
+          "student"
+        ],
+        "summary": "Get User student details",
+        "description": "Returns student detail for given parameters",
+        "operationId": "student",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "institute_id for which response desired",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      } 
+    },
+    "/students/{csv_user_ids}": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Get bulk students details",
+        "description": "Returns studentwise detail for given parameters",
+        "operationId": "students",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "csv_user_ids",
+            "in": "path",
+            "description": "comma separated user ids for which details are desired",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      } 
+    },
+    "/students/bulk": {
+      "post": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Get bulk students details",
+        "description": "Returns studentwise detail for given parameters",
+        "operationId": "students_bulk",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_ids",
+            "in": "body",
+            "description": "comma separated user ids for which details are desired",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "body",
+            "description": "from which date data needs to be captured",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "body",
+            "description": "till what date data needs to be captured",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid institute ID supplied"
+          },
+          "404": {
+            "description": "institute not found"
+          }
+        }
+      } 
     }
   },
   "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "username": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "userStatus": {
-          "type": "integer",
-          "format": "int32",
-          "description": "User Status"
-        }
-      },
-      "xml": {
-        "name": "User"
-      }
-    },
-    "Tag": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Tag"
-      }
-    },
     "institute": {
       "type": "object",
       "required": [
@@ -307,25 +555,6 @@
           "example": "20190-02-01"
         }
       }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
     }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
   }
 }
